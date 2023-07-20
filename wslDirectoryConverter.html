@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Windows to WSL Path Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background-color: #202124; /* Dark background color */
+            color: #fff; /* Text color */
+        }
+
+        h1 {
+            text-align: center;
+            color: #007BFF; /* Heading color */
+        }
+
+        .converter-container {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: #303033; /* Dark container background color */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #555; /* Dark border color */
+            border-radius: 4px;
+            box-sizing: border-box;
+            background-color: #252528; /* Dark input background color */
+            color: #fff; /* Input text color */
+        }
+
+        button {
+            padding: 10px 20px;
+            margin-top: 10px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #output {
+            margin-top: 20px;
+            /* font-weight: bold; */
+            background-color: #252528; /* Dark output background color */
+            border: 1px solid #555; /* Dark border color */
+            padding: 10px;
+            border-radius: 4px;
+            resize: vertical;
+            font-family: Arial, sans-serif;
+            color: #fff; /* Output text color */
+        }
+    </style>
+</head>
+<body>
+    <div class="converter-container">
+        <h1>Windows to WSL Path Converter</h1>
+        <label for="windowsPath">Enter Windows File Path:</label>
+        <input type="text" id="windowsPath" placeholder="C:\Users\alfred\Desktop\git_training">
+        <button onclick="convertPath()">Convert to WSL Format</button>
+        <textarea id="output" readonly></textarea>
+    </div>
+
+    <script>
+        function convertPath() {
+            const windowsPath = document.getElementById('windowsPath').value;
+            let wslPath = windowsPath.replace(/^([A-Za-z]):/, '/mnt/$1').replace(/\\/g, '/');
+            wslPath = wslPath.replace('/mnt/C', '/mnt/c'); // Convert 'C' to 'c'
+            document.getElementById('output').innerText = `cd ${wslPath}`;
+        }
+    </script>
+</body>
+</html>
