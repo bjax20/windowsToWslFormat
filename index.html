@@ -75,16 +75,51 @@
         <label for="windowsPath">Enter Windows File Path:</label>
         <input type="text" id="windowsPath" placeholder="C:\Users\alfred\Desktop\git_training">
         <button onclick="convertPath()">Convert to WSL Format</button>
+        <button onclick="copyToClipboard()">Copy</button>
         <textarea id="output" readonly></textarea>
     </div>
 
     <script>
-        function convertPath() {
+       function convertPath() {
             const windowsPath = document.getElementById('windowsPath').value;
             let wslPath = windowsPath.replace(/^([A-Za-z]):/, '/mnt/$1').replace(/\\/g, '/');
             wslPath = wslPath.replace('/mnt/C', '/mnt/c'); // Convert 'C' to 'c'
+
+            // Split the path into individual parts separated by slashes
+            const pathParts = wslPath.split('/');
+
+            // Check each part of the path for spaces and quote the folder name if it contains spaces
+            for (let i = 0; i < pathParts.length; i++) {
+                if (pathParts[i].includes(' ')) {
+                pathParts[i] = `"${pathParts[i]}"`;
+                }
+            }
+
+            // Join the path parts back together to form the final WSL path
+            wslPath = pathParts.join('/');
+
             document.getElementById('output').innerText = `cd ${wslPath}`;
         }
+
+
+        function copyToClipboard() {
+            const outputText = document.getElementById('output').value;
+
+            const textarea = document.createElement('textarea');
+            textarea.value = outputText;
+            textarea.style.position = 'absolute';
+            textarea.style.left = '-9999px';
+            document.body.appendChild(textarea);
+
+            textarea.select();
+            document.execCommand('copy');
+
+            document.body.removeChild(textarea);
+
+            alert('Copied to clipboard!');
+        }
+
+
     </script>
 </body>
 </html>
